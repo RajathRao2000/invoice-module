@@ -43,13 +43,13 @@ const Footer: React.FC<FooterProps> = ({ data }) => {
     setFinalTotals((prev) => {
       prev.total = data.totals?.total || 0;
       if (round) {
-        prev.round = "";
-        prev.final = data.totals?.total || 0;
-      } else {
         prev.round = Math.abs(
           (data.totals?.total || 0) - Math.round(data.totals?.total || 0),
         ).toFixed(2);
         prev.final = Math.round(data.totals?.total || 0);
+      } else {
+        prev.round = "";
+        prev.final = data.totals?.total || 0;
       }
 
       return { ...prev };
@@ -77,7 +77,7 @@ const Footer: React.FC<FooterProps> = ({ data }) => {
               <Checkbox
                 className="data-[state='checked']:bg-blue-800"
                 onCheckedChange={(checked) => {
-                  setRound(!checked);
+                  setRound(checked ? true : false);
                 }}
                 id="total"
               />
@@ -88,7 +88,11 @@ const Footer: React.FC<FooterProps> = ({ data }) => {
               <Input
                 className="disabled:bg-white disabled:opacity-100"
                 disabled
-                value={_data.totals?.total}
+                value={
+                  round
+                    ? Math.round(data.totals?.total || 0)
+                    : data.totals?.total
+                }
               />
             </div>
           </div>

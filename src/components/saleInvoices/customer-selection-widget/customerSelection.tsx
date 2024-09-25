@@ -6,6 +6,8 @@ import { CustomerFormData, Data } from "@/utils/types";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
+import { LuArrowDownLeft } from "react-icons/lu";
+
 import {
   Popover,
   PopoverContent,
@@ -46,7 +48,8 @@ const CustomerSelection: React.FC<CustomerSelectionProps> = ({
   useEffect(() => {
     _setData((prev) => {
       prev.form = data;
-      return { ...prev, invoice };
+      prev.form.invoice = invoice;
+      return { ...prev };
     });
   }, [data]);
 
@@ -84,7 +87,12 @@ const CustomerSelection: React.FC<CustomerSelectionProps> = ({
                       <p>{company.name}</p>
                       <p>{company.phoneNumber}</p>
                     </div>
-                    <div>{company.balance}</div>
+                    <div className="flex items-center justify-center gap-1">
+                      {company.balance}
+                      <div className="rounded-lg bg-green-700 p-1">
+                        <LuArrowDownLeft color="white" />
+                      </div>
+                    </div>
                   </button>
                 );
               })}

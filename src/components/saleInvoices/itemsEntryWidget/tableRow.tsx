@@ -33,10 +33,9 @@ const Tablerow: React.FC<TablerowProps> = ({
       <TableCell>
         <Input
           id={`qty${id}`}
-          min={1}
           name="qty"
           onChange={(e) => handler(e)}
-          value={tableData[id].qty}
+          value={tableData[id].qty || undefined}
           type="number"
         />
       </TableCell>
@@ -60,7 +59,7 @@ const Tablerow: React.FC<TablerowProps> = ({
           min={1}
           name="price"
           onChange={(e) => handler(e)}
-          value={tableData[id].price}
+          value={tableData[id].price || undefined}
           type="number"
         />
       </TableCell>
@@ -70,7 +69,7 @@ const Tablerow: React.FC<TablerowProps> = ({
             <Input
               id={`dis${id}`}
               name="discount_percent"
-              value={tableData[id].discount_percent}
+              value={tableData[id].discount_percent || undefined}
               type="number"
               onChange={(e) => handler(e)}
             />
@@ -86,7 +85,10 @@ const Tablerow: React.FC<TablerowProps> = ({
               className="w-[130px]"
               name="gst"
               onValueChange={(value) => {
-                const percent = Number(value.slice(-3).replace(/[^0-9.]/g, ""));
+                const percent = Number(
+                  value.split("@")[1].replace(/[^0-9.]/g, ""),
+                );
+                console.log(percent);
                 setTableData((prev) => {
                   prev[id] = { ...prev[id], gst: value };
                   prev[id].gstper = percent;
@@ -94,13 +96,14 @@ const Tablerow: React.FC<TablerowProps> = ({
                   prev[id].tax = Number(
                     (
                       (percent *
-                        (prev[id].qty * prev[id].price - prev[id].discount)) /
+                        ((prev[id].qty || 0) * (prev[id].price || 0) -
+                          prev[id].discount)) /
                       100
                     ).toFixed(2),
                   );
                   prev[id].total = Number(
                     (
-                      prev[id].qty * prev[id].price -
+                      (prev[id].qty || 0) * (prev[id].price || 0) -
                       prev[id].discount +
                       prev[id].tax
                     ).toFixed(2),

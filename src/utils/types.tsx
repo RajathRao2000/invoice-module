@@ -6,9 +6,9 @@ export interface Totals {
 }
 interface ItemDetails {
   item: string;
-  qty: number;
+  qty: number | null;
   unit: string;
-  price: number;
+  price: number | null;
   discount_percent: number;
   discount: number;
   gst: string;

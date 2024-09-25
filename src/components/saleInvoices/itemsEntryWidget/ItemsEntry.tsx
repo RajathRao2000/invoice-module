@@ -27,9 +27,9 @@ const ItemsEntry: React.FC<ItemsEntryProps> = ({ setTotal, setData }) => {
   const [tableData, setTableData] = useState<ItemCollection>({
     "1": {
       item: "",
-      qty: 0,
+      qty: null,
       unit: "BAGS (BAG)",
-      price: 0,
+      price: null,
       discount_percent: 0,
       discount: 0,
       gst: "",
@@ -96,13 +96,14 @@ const ItemsEntry: React.FC<ItemsEntryProps> = ({ setTotal, setData }) => {
       prev[_id].tax = Number(
         (
           (prev[_id].gstper *
-            (prev[_id].qty * prev[_id].price - prev[_id].discount)) /
+            ((prev[_id].qty || 0) * (prev[_id].price || 0) -
+              prev[_id].discount)) /
           100
         ).toFixed(2),
       );
       prev[_id].total = Number(
         (
-          prev[_id].qty * prev[_id].price -
+          (prev[_id].qty || 0) * (prev[_id].price || 0) -
           prev[_id].discount +
           prev[_id].tax
         ).toFixed(2),
@@ -189,7 +190,7 @@ const ItemsEntry: React.FC<ItemsEntryProps> = ({ setTotal, setData }) => {
               <div className="flex justify-between">
                 <TableCell className="w-1/2 p-0 text-center"></TableCell>
                 <TableCell className="w-1/2 p-0 text-center">
-                  {totals.discount}
+                  {totals.discount.toFixed(2)}
                 </TableCell>
               </div>
             </TableCell>
@@ -197,7 +198,7 @@ const ItemsEntry: React.FC<ItemsEntryProps> = ({ setTotal, setData }) => {
               <div className="flex justify-between">
                 <TableCell className="w-1/2 p-0 text-center"></TableCell>
                 <TableCell className="w-1/2 p-0 text-center">
-                  {totals.tax}
+                  {totals.tax.toFixed(2)}
                 </TableCell>
               </div>
             </TableCell>
